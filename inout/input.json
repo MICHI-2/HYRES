@@ -1,0 +1,44 @@
+{
+    "inout file name" : {
+        "cstar csv file name" : "./PMMAvsN2O_cstar.csv",
+        "gamma csv file name" : "./PMMAvsN2O_gamma.csv"
+    },
+    
+    "oxidizer" : {
+        "Initial tank pressure [Nm^-2]" : 4.1e+6,
+        "Final tank pressure [Nm^-2]" : 2.6e+6,
+        "Oxidizer filling volume [m^3]" : 0.003,
+        "Oxidizer density [kgm^-3]" : 852.24
+    },
+
+    "fuel" : {
+        "Fuel density [kgm^-3]" : 1190,
+        "Fuel length [m]" : 0.330,
+        "Initial port diameter [m]" : 0.035,
+        "Fuel outer diameter [m]" : 0.041,
+        "Fuel port number [-]" : 1
+    },
+
+    "Oxidizer flow characteristics" : {
+        "Orifice diameter [m]" : 0.003,
+        "Flow coefficient [-]" : 0.4
+    },
+
+    "Combustion characteristics" : {
+        "Oxidizer mass flux coefficient [m^3kg^-1]" : 1.310e-4,
+        "Oxidizer mass flux exponent [-]" : 0.340,
+        "C-star efficiency [-]" : 0.8
+    },
+
+    "Nozzle characteristics" : {
+        "Initial nozzle throat diameter [m]" : 0.0127,
+        "Nozzle exit diameter [m]" : 0.022,
+        "Nozzle exit half angle [deg]" : 15,
+        "Nozzle erosion speed [ms^-1]" : 0.0
+    },
+
+    "Environment" : {
+        "Back pressure [Nm^-2]" : 0.1013e+6
+    }
+
+}
