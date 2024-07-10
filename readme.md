@@ -3,11 +3,13 @@
 work
 
 ## how to use
+```
 $ git clone https://github.com/MICHI-2/HYRES.git
 $ cd ForRocket
 $ make release
 $ cd .\inout
 $ .\HYRES_release.exe
+```
 
 ## how to use
 1. fill input.json well
