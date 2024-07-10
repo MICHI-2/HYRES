@@ -33,6 +33,7 @@ namespace hyres{
         
         private:
         double Bilinear_interpolation(double row_axis, double line_axis, std::vector<std::vector<double>> data, std::vector<double> header, std::vector<double> index);
+        void progress(double t_est, size_t step);
         size_t return_ind(double value, std::vector<double> list);
 
     };

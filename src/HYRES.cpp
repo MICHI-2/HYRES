@@ -13,9 +13,8 @@ int main(){
     std::cout << "hello, I am HYRES v0.1" << std::endl;
     auto start = std::chrono::system_clock::now();
 
-    /*ここから*/
     hyres::solver("./input.json");
-    /*ここまで*/
+    
     auto end = std::chrono::system_clock::now();
     auto msec = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     std::cout << msec << " msec" << std::endl;

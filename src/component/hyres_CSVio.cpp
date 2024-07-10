@@ -1,5 +1,6 @@
 #include "hyres_CSVio.hpp"
 
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <algorithm>
@@ -7,13 +8,9 @@
 std::vector<std::vector<double>> hyres::csvin::CSV_read(std::string filepath){
     std::vector<std::vector<double>> result;
     std::ifstream file(filepath);
+    if (!file.is_open()){std::cout << "Error: Unable to open file:" << filepath << std::endl;}
     std::string line;
     int line_count = 0;
-
-    if (!file.is_open()){
-        std::out << "Error: Unable to open file:" << filepath << std::endl;
-        return 1;
-    }
     
     while(std::getline(file, line)){
         std::vector<std::string> row = hyres::csvin::split(line, ',');

@@ -3,28 +3,33 @@
 #include <fstream>
 #include <iostream>
 #include <math.h>
+#include <iomanip>
 
 #include "hyres_CSVio.hpp"
 
 hyres::solver::solver(std::string config_json_file){
+    std::cout << "Read json file: " << config_json_file << std::endl;
     std::ifstream json_f(config_json_file);
+    if (!json_f.is_open()){std::cout << "Error: Unable to open file: " << config_json_file << std::endl;}
     json j_data = json::parse(json_f);
     std::vector<double> setting = hyres::solver::replace_json(j_data);
 
     hyres::csvin CSVIN;
     hyres::csvout CSVOUT;
 
+    std::cout << "Read csv file: " << j_data["inout file name"]["cstar csv file name"] << std::endl;
     std::vector<std::vector<double>> csv = CSVIN.CSV_read(j_data["inout file name"]["cstar csv file name"]);
     cstar = CSVIN.CSV_datafield(csv);
     cstar_header = CSVIN.CSV_header(csv);
     cstar_index = CSVIN.CSV_index(csv);
 
+    std::cout << "Read csv file: " << j_data["inout file name"]["gamma csv file name"] << std::endl;
     csv = CSVIN.CSV_read(j_data["inout file name"]["gamma csv file name"]);
     gamma = CSVIN.CSV_datafield(csv);
     gamma_header = CSVIN.CSV_header(csv);
     gamma_index = CSVIN.CSV_index(csv);
 
-    //いつかかえる
+    std::cout << "Setting file loading complete" << std::endl;
     double hz = 100;
     double ini_burn_time = 5.0;
 
@@ -32,11 +37,10 @@ hyres::solver::solver(std::string config_json_file){
     double t_est_update = ini_burn_time;
 
     //set initial state
-    size_t max_step = 30 * hz;
+    size_t max_step = 100 * hz;
     hyres::solver::solver_space.resize(max_step, std::vector<double>(19, 0));
 
     do{t_est = t_est_update;
-
         for(size_t t_step=0; t_step<solver_space.size(); t_step+=1){
             solver_space[t_step][0] = static_cast<double>(t_step)/100;
             solver_space[t_step][1] = setting[0]+(setting[1]-setting[0])*static_cast<double>(t_step)/(t_est*hz);
@@ -45,7 +49,9 @@ hyres::solver::solver(std::string config_json_file){
         }
 
         for(size_t t_step=0; t_step<solver_space.size(); t_step+=1){
+            /* pox < 0 */
             if(solver_space[t_step][1]<0){
+                hyres::solver::progress(t_est, t_step);
                 t_est_update = static_cast<double>(t_step)/hz;
                 break;
             }
@@ -62,13 +68,16 @@ hyres::solver::solver(std::string config_json_file){
                     break;
             }
             solver_space[t_step] = hyres::solver::Pc_brute_force_method(solver_space[t_step], setting);
+            /* ox used */
             if(solver_space[t_step][4]>setting[2]*setting[3]){
+                hyres::solver::progress(t_est, t_step);
                 t_est_update = static_cast<double>(t_step)/hz;
                 solver_space.resize(t_step+1);
                 break;
             }
+            if(t_step%100==0) hyres::solver::progress(t_est, t_step);
         }
-        std::cout<<t_est_update<<std::endl;
+        std::cout << "\n";
     }while(t_est_update!=t_est);
 
     for(size_t t_step=0; t_step<solver_space.size(); t_step+=1){
@@ -81,7 +90,6 @@ hyres::solver::solver(std::string config_json_file){
         }
     }
 
-    
     std::vector<std::string> out_hed = {"time","tank pressure","chamber pressure","nozzle outlet pressure","oxidizer consumption","fuel consumption","oxidizer mass flow","fuel mass flow","O/F","oxidizer mass flow flux","port diameter","fuel recession velocity","experimental c star","throat diameter","gamma","thrust coefficient","nozzle area ratio","thrust","total impulse"};
     CSVOUT.CSV_out(solver_space, out_hed, "./output.csv");
 
@@ -122,7 +130,7 @@ std::vector<double> hyres::solver::Pc_brute_force_method(std::vector<double> sta
     double ans_pc = 0.0;
     double pc_div_min = 10.0e+6;
 
-    for(double pc_est=0.5e+6; pc_est<4.0e+6; pc_est+=0.001e+6){
+    for(double pc_est=0.5e+6; pc_est<setting[0]; pc_est+=0.001e+6){
         if(state[1]<(pc_est+0.1e+6)){
             continue;
         }
@@ -194,4 +202,19 @@ size_t hyres::solver::return_ind(double value, std::vector<double> list){
         }
     }
     return list.size()-1;
+};
+
+void hyres::solver::progress(double t_est, size_t step){
+    int barWidth = 30;
+    float ratio = float(step) / float(t_est*100);
+    int pos = barWidth * ratio;
+
+    std::cout << std::fixed << std::setprecision(2) << t_est << "  [";
+    for (int i = 0; i < barWidth; ++i) {
+        if (i < pos) std::cout << "=";
+        else if (i == pos) std::cout << ">";
+        else std::cout << " ";
+    }
+    std::cout << "] " << int(ratio*100.0) << " %\r";
+    std::cout.flush();
 };
