@@ -28,5 +28,4 @@ $ .\HYRES_release.exe
 - Adaptation for swirl flow
 
 ## license
-I have adopted the MIT licence.<br>
-But I don't intend to publish it extensively.
+MIT licence
