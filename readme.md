@@ -1,13 +1,13 @@
 # HYRES -HYbrid Rocket Engine Simulator-
 ## feature
-I have nothing right now.<br>
-I'll think about it later.<br>
-I think nothing about the user interface.
+work
 
-## how to download
+## how to use
 $ git clone https://github.com/MICHI-2/HYRES.git
 $ cd ForRocket
 $ make release
+$ cd .\inout
+$ .\HYRES_release.exe
 
 ## how to use
 1. fill input.json well
