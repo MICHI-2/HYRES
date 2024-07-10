@@ -11,12 +11,11 @@ $ cd .\inout
 $ .\HYRES_release.exe
 ```
 
-## how to use
+## how to setting
 1. fill input.json well
 1. fill csv file about specific impulse specific heat ratio well
       - vertical axis is OF
       - horizontal axis is pressure of chamber
-1. run HYRES.exe
 
 ## library
 - [nlohman json](https://github.com/nlohmann/json)
