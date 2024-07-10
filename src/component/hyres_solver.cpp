@@ -195,13 +195,11 @@ double hyres::solver::Bilinear_interpolation(double row_axis, double line_axis, 
 size_t hyres::solver::return_ind(double value, std::vector<double> list){
     for(size_t i=0; i<list.size(); i+=1){
         if(value<list[i]){
-            if(i==0){
-                return 0;
-            }
+            if(i==0) return 0;
             return i-1;
         }
     }
-    return list.size()-1;
+    return list.size()-2;
 };
 
 void hyres::solver::progress(double t_est, size_t step){
