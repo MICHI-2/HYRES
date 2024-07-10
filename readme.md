@@ -5,7 +5,7 @@ work
 ## how to use
 ```
 $ git clone https://github.com/MICHI-2/HYRES.git
-$ cd ForRocket
+$ cd .\HYRES
 $ make release
 $ cd .\inout
 $ .\HYRES_release.exe
