@@ -5,7 +5,9 @@ I'll think about it later.<br>
 I think nothing about the user interface.
 
 ## how to download
-download "HYRESv0.1.zip" from releases page and unzip
+$ git clone https://github.com/MICHI-2/HYRES.git
+$ cd ForRocket
+$ make release
 
 ## how to use
 1. fill input.json well
