@@ -9,6 +9,11 @@ std::vector<std::vector<double>> hyres::csvin::CSV_read(std::string filepath){
     std::ifstream file(filepath);
     std::string line;
     int line_count = 0;
+
+    if (!file.is_open()){
+        std::out << "Error: Unable to open file:" << filepath << std::endl;
+        return 1;
+    }
     
     while(std::getline(file, line)){
         std::vector<std::string> row = hyres::csvin::split(line, ',');
